@@ -7,8 +7,7 @@ import java.sql.*;
 public class UserDao {
     public void addUser(User user) {
         try {
-            Class.forName("org.mariadb.jdbc.Driver");
-            Connection c = DriverManager.getConnection("jdbc:mariadb://qpakr38.iptime.org:3306/tobySpring", "tobySpring", "tobySpring");
+            Connection c = getConnection();
             PreparedStatement ps = c.prepareStatement(
                     "INSERT INTO USERS(ID,NAME,PASSWORD) VALUES(?,?,?)");
             ps.setString(1, user.getId());
@@ -26,8 +25,7 @@ public class UserDao {
 
     public User getUser(String id) {
         try {
-            Class.forName("org.mariadb.jdbc.Driver");
-            Connection c = DriverManager.getConnection("jdbc:mariadb://qpakr38.iptime.org:3306/tobySpring", "tobySpring", "tobySpring");
+            Connection c = getConnection();
             PreparedStatement ps = c.prepareStatement(
                     "SELECT * FROM USERS WHERE ID =?");
             ps.setString(1, id);
@@ -49,5 +47,10 @@ public class UserDao {
             System.out.println("error : " + e.getMessage());
             return null;
         }
+    }
+
+    private Connection getConnection() throws ClassNotFoundException, SQLException {
+        Class.forName("org.mariadb.jdbc.Driver");
+        return DriverManager.getConnection("jdbc:mariadb://qpakr38.iptime.org:3306/tobySpring", "tobySpring", "tobySpring");
     }
 }
