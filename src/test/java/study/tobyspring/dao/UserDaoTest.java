@@ -18,7 +18,7 @@ class UserDaoTest {
     @DisplayName("UserDAO의 getUser와 addUser 테스트")
     @Transient
     public void userDaoTest() throws Exception {
-        UserDao userDao = new UserDao();
+        UserDao userDao = new NUserDao();
         //given
         User user = new User();
         user.setId("9999");
