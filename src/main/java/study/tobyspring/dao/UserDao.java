@@ -5,9 +5,15 @@ import study.tobyspring.domain.User;
 import java.sql.*;
 
 public class UserDao {
+    private SimpleConnectionMaker simpleConnectionMaker;
+
+    public UserDao() {
+         simpleConnectionMaker = new SimpleConnectionMaker();
+    }
+
     public void addUser(User user) {
         try {
-            Connection c = getConnection();
+            Connection c = simpleConnectionMaker.makeNewConnection();
             PreparedStatement ps = c.prepareStatement(
                     "INSERT INTO USERS(ID,NAME,PASSWORD) VALUES(?,?,?)");
             ps.setString(1, user.getId());
@@ -25,7 +31,7 @@ public class UserDao {
 
     public User getUser(String id) {
         try {
-            Connection c = getConnection();
+            Connection c = simpleConnectionMaker.makeNewConnection();
             PreparedStatement ps = c.prepareStatement(
                     "SELECT * FROM USERS WHERE ID =?");
             ps.setString(1, id);
@@ -49,8 +55,4 @@ public class UserDao {
         }
     }
 
-    private Connection getConnection() throws ClassNotFoundException, SQLException {
-        Class.forName("org.mariadb.jdbc.Driver");
-        return DriverManager.getConnection("jdbc:mariadb://qpakr38.iptime.org:3306/tobySpring", "tobySpring", "tobySpring");
-    }
 }
